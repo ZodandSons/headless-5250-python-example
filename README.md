@@ -48,7 +48,7 @@ The repo includes a small fake host with a sign-on screen and a main menu:
 
 ```bash
 python tests/fake_host.py            # terminal 1: listens on 127.0.0.1:2323
-h5250 examples/demo_fake_host.5250   # terminal 2
+PYTHONPATH=src python -m headless5250 examples/demo_fake_host.5250    # terminal 2
 ```
 
 ### 2. A script against a real system
@@ -71,7 +71,7 @@ save activejobs.txt
 
 ```bash
 export H5250_PASSWORD='...'
-h5250 signon.5250 -D HOST=myibmi.example.com -D USER=BOB
+PYTHONPATH=src py -m headless5250 examples/signon.5250 -D HOST=your.real.hostname -D USER=BOB
 ```
 
 The exit code is `0` on success, `1` if a check fails (the screen at the point of failure is printed to stderr), and `2` for connection errors, so scripts drop straight into cron, Jenkins or GitHub Actions.

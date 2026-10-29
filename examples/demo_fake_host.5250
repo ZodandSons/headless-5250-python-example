@@ -1,0 +1,26 @@
+# Runs against the bundled fake host - no IBM i needed:
+#
+#   python tests/fake_host.py              (terminal 1)
+#   h5250 examples/demo_fake_host.5250     (terminal 2)
+
+connect 127.0.0.1 2323
+wait-text "Sign On"
+fields
+
+# Pressing Enter without a user name gets an error message
+key ENTER
+assert "CPF1120"
+echo Host said: CPF1120 (user required) - pressing Reset
+key RESET
+
+fill-after "User" demo
+fill-after "Password" "demo"
+key ENTER
+assert "IBM i Main Menu"
+
+capture WHO 18 15 10
+echo Signed on as ${WHO}
+print
+
+fill-after "===>" "SIGNOFF"
+key ENTER nowait

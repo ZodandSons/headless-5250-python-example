@@ -1,0 +1,29 @@
+# A regression smoke test for CI: each step must show the expected screen,
+# otherwise h5250 exits 1 and prints the screen it got.
+#
+#   h5250 examples/smoke_test.5250 -D HOST=devibmi -D USER=QATEST
+
+connect ${HOST} 992 tls timeout=60
+wait-text "Sign On"
+fill-after "User" ${USER}
+fill-after "Password" ${H5250_PASSWORD}
+key ENTER
+if "Display Program Messages" key ENTER
+assert "Main Menu"
+
+# Library list is what the application expects
+fill-after "===>" "DSPLIBL"
+key ENTER
+assert "Display Library List"
+assert "QGPL"
+key F3
+
+# A command that should fail gives an error, not a crash
+fill-after "===>" "DSPOBJD OBJ(NOSUCHLIB/NOSUCHOBJ) OBJTYPE(*PGM)"
+key ENTER
+assert "not found"
+key RESET
+
+fill-after "===>" "SIGNOFF"
+key ENTER nowait
+echo Smoke test passed

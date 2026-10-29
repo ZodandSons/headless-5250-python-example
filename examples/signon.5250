@@ -1,0 +1,26 @@
+# Sign on to IBM i, run WRKACTJOB, save the screen, sign off.
+#
+#   export H5250_PASSWORD='...'
+#   h5250 examples/signon.5250 -D HOST=myibmi.example.com -D USER=BOB
+
+connect ${HOST} 992 tls timeout=30
+wait-text "Sign On"
+
+fill-after "User" ${USER}
+fill-after "Password" ${H5250_PASSWORD}
+key ENTER
+
+# Screens that can appear after sign-on
+if "Display Program Messages" key ENTER
+if "Password expires" key ENTER
+ifnot "Main Menu" fail "sign-on did not reach the main menu"
+
+fill-after "===>" "WRKACTJOB"
+key ENTER
+wait-text "Work with Active Jobs"
+save activejobs.txt
+echo Saved WRKACTJOB to activejobs.txt
+
+key F3
+fill-after "===>" "SIGNOFF"
+key ENTER nowait

@@ -1,0 +1,35 @@
+# Save every page of WRKSPLF into one text file.
+# The script language has no loops, so the page step is repeated; extra
+# repeats are harmless because each one only runs until "Bottom" shows.
+# For unlimited paging use the Python API (docs/python-api.md).
+#
+#   h5250 examples/paged_report.5250 -D HOST=myibmi -D USER=BOB
+
+connect ${HOST} 992 tls
+wait-text "Sign On"
+fill-after "User" ${USER}
+fill-after "Password" ${H5250_PASSWORD}
+key ENTER
+if "Display Program Messages" key ENTER
+
+fill-after "===>" "WRKSPLF"
+key ENTER
+wait-text "Work with All Spooled Files"
+save spooled_files.txt
+
+ifnot "Bottom" key PAGEDOWN
+ifnot "Bottom" save spooled_files.txt append
+ifnot "Bottom" key PAGEDOWN
+ifnot "Bottom" save spooled_files.txt append
+ifnot "Bottom" key PAGEDOWN
+ifnot "Bottom" save spooled_files.txt append
+ifnot "Bottom" key PAGEDOWN
+ifnot "Bottom" save spooled_files.txt append
+ifnot "Bottom" key PAGEDOWN
+ifnot "Bottom" save spooled_files.txt append
+# last page (the one showing "Bottom")
+save spooled_files.txt append
+
+key F3
+fill-after "===>" "SIGNOFF"
+key ENTER nowait

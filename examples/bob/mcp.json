@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "h5250": {
+      "command": "h5250-mcp",
+      "env": {
+        "H5250_ALLOWED_HOSTS": "devibmi.example.com",
+        "H5250_PASSWORD": "replace-with-the-password-for-the-bob-profile"
+      }
+    }
+  }
+}
